@@ -1,0 +1,8 @@
+{
+    "cmake.sourceDirectory": "/Users/saumyagangrade/VSCode/a3-grpc-api-Saumya8/grpc",
+    "cmake.configureOnOpen": true,
+    "python.analysis.extraPaths": [
+        "./proto",
+        "./client"
+    ]
+}

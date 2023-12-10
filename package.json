@@ -1,0 +1,12 @@
+{
+  "name": "a3-grpc-api-saumya8",
+  "version": "1.0.0",
+  "description": "Assignment 3 - API Design - gRPC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
