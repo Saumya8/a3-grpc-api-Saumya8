@@ -51,7 +51,7 @@ message User {
 
 // Post
 message Post {
-    string id = 1; // Unique identifier - 'p1', 'p2', etc.
+    string id = 1; // Generated uuid
     string title = 2;
     string text = 3;
     oneof media {
@@ -67,15 +67,13 @@ message Post {
 
 // Comment
 message Comment {
-    // should have comment ID and parent ID
-    string comment_id = 1;
+    string comment_id = 1; // Generated uuid
     string author = 2;
     int32 score = 3;
     CommentState state = 4;
     int64 publication_date = 5;
     string parent_id = 6; // Post ID or Parent Comment ID
     string text = 7;
-
 }
 
 // Tag

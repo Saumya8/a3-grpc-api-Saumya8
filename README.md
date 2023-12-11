@@ -105,18 +105,27 @@ If facing errors:
 
 
 # To run Protobuf:
-python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. bithub_service.proto
+cd proto/
+python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. reddit.proto
 
 # To Run server: 
-    python bithub_server.py
-    In different terminal, 
-# To Run Client: 
-    cd src/main/component_3
-    run Client: python client.py
+    python server/reddit_service.py
+    
+    If facing issue: run -
 
-# To run Tests:
-    In one terminal run, -> python server.py
-    In differnt terminal, -> run: pytest
+    export PYTHONPATH=$PYTHONPATH:`pwd`
+
+    Again: python server/reddit_service.py
+    
+# In different terminal, To Run Client: 
+    run Client: python client/reddit_client.py
+
+# To run Tests for Client API calls:
+    In one terminal run, -> python server/reddit_service.py
+    In differnt terminal, -> run: pytest tests/test_client.py
+
+# To run High level function tets:
+
 
 
 To check missing terms in coverage report:

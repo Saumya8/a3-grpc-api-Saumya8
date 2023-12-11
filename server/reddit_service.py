@@ -2,18 +2,29 @@ import argparse
 
 from concurrent import futures
 import datetime
+import os
 import random
+import sys
 # from storage import Database
 import uuid
 import time
 import threading
 import logging
 import grpc
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'proto'))
 from proto import reddit_pb2
 from proto import reddit_pb2_grpc
 
 posts = {}  # Dictionary for posts
 comments = {}  # Dictionary for comments
+users = {
+    "user1": reddit_pb2.User(user_id="user1"),
+    "user2": reddit_pb2.User(user_id="user2"),
+    "user3": reddit_pb2.User(user_id="user3"),
+    "user4": reddit_pb2.User(user_id="user4"),
+    "user5": reddit_pb2.User(user_id="user5"),
+    } # Sample Dictionary for users
 #logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # next_post_id = 1
@@ -34,6 +45,10 @@ class RedditService(reddit_pb2_grpc.RedditServiceServicer):
     
     #1. Create a Post
     def CreatePost(self, request, context):
+        # Always grant to user therefore no check for user id required just a warning
+        if request.author not in users:
+            logging.warning(f"User {request.author} isn't in authenticated userbase.")
+        
         try:
             post_id = str(uuid.uuid4())  # Generate a unique UUID
             new_post = reddit_pb2.Post(
