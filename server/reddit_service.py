@@ -206,22 +206,6 @@ class RedditService(reddit_pb2_grpc.RedditServiceServicer):
 
             time.sleep(1)  # Check for updates every second
         
-        # post_id = request.post_id
-        # comment_ids = request.comment_ids
-
-        # try:
-        #     while True:
-        #         # Simulate a score update
-        #         updated_post_score = random.randint(-10, 10)
-        #         yield reddit_pb2.ScoreUpdate(item_id=post_id, new_score=updated_post_score)
-
-        #         for comment_id in comment_ids:
-        #             updated_comment_score = random.randint(-10, 10)
-        #             yield reddit_pb2.ScoreUpdate(item_id=comment_id, new_score=updated_comment_score)
-
-        #         time.sleep(5)  # Wait for 5 seconds before sending the next update
-        # except KeyboardInterrupt:
-        #     pass
 
 def serve(host, port):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -263,11 +247,3 @@ if __name__ == '__main__':
     # server.start()
     # server.wait_for_termination()
 
-# if __name__ == '__main__':
-#     parser = argparse.ArgumentParser(description='gRPC Reddit Clone Server')
-#     parser.add_argument('--host', default='localhost', type=str, help='Host to run gRPC server on')
-#     parser.add_argument('--port', default=50051, type=int, help='Port to run gRPC server on')
-#     args = parser.parse_args()
-
-#     threading.Thread(target=update_scores, daemon=True).start()
-#     serve(args.host, args.port)
