@@ -51,6 +51,58 @@ class RedditClient:
 
     def close(self):
         self.channel.close()
+        
+     
+    # High Level Implemenation
+    def retrieve_and_expand(self, post_id):
+        try:
+            # Retrieve the post
+            post = self.retrieve_post_content(post_id)
+
+            # Check if the post exists
+            if not post or not post.id:
+                return None
+
+            # Retrieve the most upvoted comments
+            top_comments_response = self.retrieve_top_n_comments(post_id, 1)
+            if not top_comments_response or not top_comments_response.comments:
+                return None
+
+            most_upvoted_comment = top_comments_response.comments[0]
+
+            # Expand the most upvoted comment
+            expanded_comments_response = self.expand_comment_branch(
+                most_upvoted_comment.comment_id, 2)
+
+            if not expanded_comments_response or len(expanded_comments_response.comments) <= 1:
+                return None
+
+            # Return the most upvoted reply under the most upvoted comment
+            return expanded_comments_response.comments[1]
+        except grpc.RpcError as e:
+            print(f"Error while making gRPC API call: {e}")
+            return None
+
+    # def retrieve_and_expand(client, post_id):
+    #     post = client.retrieve_post_content(post_id)
+    
+    #    # Check if the post exists
+    #     if not post or not post.id:
+    #         return None
+
+    #     top_comments_response = client.retrieve_top_n_comments(post_id, 1)
+    #     if not top_comments_response or not top_comments_response.comments:
+    #         return None
+
+    #     most_upvoted_comment = top_comments_response.comments[0]
+    #     expanded_comments_response = client.expand_comment_branch(most_upvoted_comment.comment_id, 2)
+
+    #     if not expanded_comments_response or len(expanded_comments_response.comments) <= 1:
+    #         return None
+
+    #     return expanded_comments_response.comments[1]
+
+
 
 
 if __name__ == "__main__":
@@ -111,19 +163,7 @@ if __name__ == "__main__":
     print("Expanded Comment Branch for the first comment:")
     for expanded_comment in expanded_comments.comments:
         print(f" - {expanded_comment.comment_id}: '{expanded_comment.text}', Score: {expanded_comment.score}")
-    
-    # # Retrieve Top N Comments
-    # top_comments = client.retrieve_top_n_comments(post.id, 3)
-    # print("Top Comments:")
-    # for comment in top_comments.comments:
-    #     print(f" - {comment.comment_id}: {comment.text}")
         
-    # top_comments = client.retrieve_top_n_comments("post_id_here", 5)
-    # comment_branch = client.expand_comment_branch("comment_id_here", 3)
-    # updates_stream = client.monitor_updates("post_id_here", ["comment_id1", "comment_id2"])
-
-    # for update in updates_stream:
-    #     print(f"Update: {update}")
     
     # Monitor Updates every second - Extra Credit
     print("Monitoring Updates:")
